@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://orionethanfg1.github.io',
-  base: '/humo_demo.io', // Ajustar si cambias el nombre del repo
+  base: '/humo_demo.io/',
   vite: {
     plugins: [tailwindcss()],
   },
