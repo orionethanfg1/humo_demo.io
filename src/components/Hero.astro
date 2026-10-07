@@ -1,1 +1,58 @@
-PLACEHOLDER_WILL_REPLACE
+---
+const base = import.meta.env.BASE_URL;
+const heroImg = `${base}images/hero-smoke.jpg`;
+---
+
+<section class="relative overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32">
+  <div class="absolute inset-0 -z-10">
+    <img
+      src={heroImg}
+      alt=""
+      class="h-full w-full object-cover opacity-60"
+      loading="eager"
+      decoding="async"
+      width="900"
+      height="600"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-surface/80 via-surface/60 to-surface"></div>
+  </div>
+
+  <div class="container-humo relative">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="animate-fade-up mb-4 inline-flex items-center gap-2 rounded-full border border-smoke-700/60 bg-surface-elevated/60 px-3.5 py-1.5 text-xs font-medium text-accent-400 backdrop-blur-sm">
+        <span class="h-1.5 w-1.5 rounded-full bg-accent-500 animate-pulse"></span>
+        Desarrollo de software profesional
+      </p>
+
+      <h1 class="animate-fade-up delay-100 text-4xl font-bold tracking-tight text-text-primary sm:text-5xl lg:text-6xl text-balance">
+        Soluciones digitales
+        <span class="text-gradient"> claras, rápidas</span>
+        <br class="hidden sm:block" /> y a tu medida
+      </h1>
+
+      <p class="animate-fade-up delay-200 mt-6 text-lg leading-relaxed text-text-secondary sm:text-xl max-w-2xl mx-auto">
+        Páginas web listas en días, chatbots que atienden 24/7 y dashboards que te dan control real de tu negocio. Sin sistemas caros ni complicaciones.
+      </p>
+
+      <div class="animate-fade-up delay-300 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#contacto" class="btn-primary min-w-[180px]">Quiero mi solución</a>
+        <a href="#demos" class="btn-secondary min-w-[180px]">Ver demos en vivo</a>
+      </div>
+
+      <div class="animate-fade-up delay-400 mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-text-muted">
+        <span class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-accent-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          Entrega en días
+        </span>
+        <span class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-accent-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          100% personalizado
+        </span>
+        <span class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-accent-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          Soporte cercano
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
