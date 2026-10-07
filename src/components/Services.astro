@@ -1,28 +1,26 @@
 ---
-import { serviceWeb } from '../data/serviceWeb';
-import { serviceChatbot } from '../data/serviceChatbot';
-import { serviceDashboard } from '../data/serviceDashboard';
+const base = import.meta.env.BASE_URL;
 
 const services = [
   {
     id: 'web',
     title: 'Página web rápida',
     description: 'Presencia profesional en internet lista para compartir en menos de una semana. Diseño moderno, responsive y optimizado.',
-    image: serviceWeb,
+    image: `${base}images/service-web.jpg`,
     value: 'Presencia digital lista para compartir',
   },
   {
     id: 'chatbot',
     title: 'Chatbot de WhatsApp',
     description: 'Atiende horarios, agenda citas y envía recordatorios automáticamente. Tu equipo ahorra tiempo y el cliente recibe respuesta inmediata.',
-    image: serviceChatbot,
+    image: `${base}images/service-chatbot.jpg`,
     value: 'Atención 24/7 sin aumentar personal',
   },
   {
     id: 'dashboard',
     title: 'Dashboard automático',
     description: 'Ventas, productos más vendidos y reportes claros en gráficas. Control de tu negocio sin sistemas caros ni hojas de cálculo eternas.',
-    image: serviceDashboard,
+    image: `${base}images/service-dashboard.jpg`,
     value: 'Decisiones basadas en datos reales',
   },
 ];
