@@ -1,0 +1,27 @@
+---
+const steps = [
+  { num: '01', title: 'Conversamos', desc: 'Entendemos tu negocio y lo que realmente necesitas.' },
+  { num: '02', title: 'Diseñamos', desc: 'Propuesta clara, tiempos y alcance sin letra chica.' },
+  { num: '03', title: 'Construimos', desc: 'Desarrollo ágil con revisiones constantes.' },
+  { num: '04', title: 'Entregamos', desc: 'Lista para usar + capacitación y soporte inicial.' },
+];
+---
+
+<section id="proceso" class="py-20 sm:py-28 bg-surface-elevated/40">
+  <div class="container-humo">
+    <div class="mx-auto max-w-2xl text-center mb-14">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Cómo trabajamos</h2>
+      <p class="mt-4 text-lg text-text-secondary">Proceso simple, transparente y orientado a resultados.</p>
+    </div>
+
+    <ol class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {steps.map((step) => (
+        <li class="relative">
+          <span class="text-4xl font-bold text-accent-500/20">{step.num}</span>
+          <h3 class="mt-2 text-lg font-semibold text-text-primary">{step.title}</h3>
+          <p class="mt-2 text-sm text-text-secondary leading-relaxed">{step.desc}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
