@@ -1,0 +1,33 @@
+---
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  showWordmark?: boolean;
+  class?: string;
+}
+
+const { size = 'md', showWordmark = true, class: className = '' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const sizes = {
+  sm: { icon: 'h-7 w-7', text: 'text-base' },
+  md: { icon: 'h-9 w-9', text: 'text-lg' },
+  lg: { icon: 'h-12 w-12', text: 'text-2xl' },
+};
+const s = sizes[size];
+---
+
+<span class={`inline-flex items-center gap-2.5 ${className}`}>
+  <img
+    src={`${base}images/logo-mark.svg`}
+    alt=""
+    width="40"
+    height="40"
+    class={`${s.icon} shrink-0 drop-shadow-[0_0_12px_rgba(45,212,191,0.25)]`}
+    decoding="async"
+  />
+  {showWordmark && (
+    <span class={`${s.text} font-semibold tracking-[0.12em] text-text-primary uppercase`}>
+      Humo
+    </span>
+  )}
+</span>
