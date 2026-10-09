@@ -1,0 +1,228 @@
+---
+const WA_BASE = 'https://wa.me/523335982161';
+---
+
+<div id="humo-demo-chat" class="humo-chat" data-wa-base={WA_BASE}>
+  <button
+    type="button"
+    id="humo-chat-toggle"
+    class="humo-chat__toggle"
+    aria-expanded="false"
+    aria-controls="humo-chat-panel"
+    aria-label="Abrir asistente de demo"
+  >
+    <span class="humo-chat__toggle-icon" aria-hidden="true">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+      </svg>
+    </span>
+    <span class="humo-chat__toggle-close" aria-hidden="true">
+      <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </span>
+  </button>
+
+  <div
+    id="humo-chat-panel"
+    class="humo-chat__panel"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="humo-chat-title"
+    hidden
+  >
+    <header class="humo-chat__header">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span class="h-2 w-2 rounded-full bg-accent-500 shrink-0 animate-pulse" aria-hidden="true"></span>
+        <div class="min-w-0">
+          <p id="humo-chat-title" class="text-sm font-semibold text-text-primary truncate">Asistente Humo</p>
+          <p class="text-xs text-text-muted">Demo interactiva · no es un bot real aun</p>
+        </div>
+      </div>
+      <button type="button" id="humo-chat-close" class="humo-chat__icon-btn" aria-label="Cerrar chat">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </header>
+
+    <div id="humo-chat-messages" class="humo-chat__messages" aria-live="polite"></div>
+    <div id="humo-chat-actions" class="humo-chat__actions"></div>
+  </div>
+</div>
+
+<script>
+  const FLOW = {
+    start: {
+      id: 'start',
+      bot: 'Hola! Soy el asistente demo de Humo. Que te interesa explorar?',
+      options: [
+        { label: 'Pagina web rapida', next: 'web', value: 'web' },
+        { label: 'Chatbot de WhatsApp', next: 'chatbot', value: 'chatbot' },
+        { label: 'Dashboard automatico', next: 'dashboard', value: 'dashboard' },
+        { label: 'Aun no lo se', next: 'unsure', value: 'asesoria' },
+      ],
+    },
+    web: {
+      id: 'web',
+      bot: 'Perfecto. En pocos dias puedes tener una pagina como esta: moderna, rapida y lista para compartir. Quieres que te armemos una propuesta?',
+      options: [
+        { label: 'Si, por WhatsApp', next: 'wa', value: 'web' },
+        { label: 'Ver otras opciones', next: 'start' },
+      ],
+    },
+    chatbot: {
+      id: 'chatbot',
+      bot: 'Un chatbot puede responder horarios, agendar y mandar recordatorios 24/7. Ideal para clinicas, restaurantes y servicios. Lo vemos para tu negocio?',
+      options: [
+        { label: 'Si, por WhatsApp', next: 'wa', value: 'chatbot' },
+        { label: 'Ver otras opciones', next: 'start' },
+      ],
+    },
+    dashboard: {
+      id: 'dashboard',
+      bot: 'Con un dashboard ves ventas, platos top y reportes automaticos — como el demo de Brasa Fina. Control real sin sistemas caros. Te interesa?',
+      options: [
+        { label: 'Si, por WhatsApp', next: 'wa', value: 'dashboard' },
+        { label: 'Ver otras opciones', next: 'start' },
+      ],
+    },
+    unsure: {
+      id: 'unsure',
+      bot: 'Sin problema. Cuentanos tu negocio y te recomendamos la solucion mas simple. Seguimos por WhatsApp?',
+      options: [
+        { label: 'Escribir por WhatsApp', next: 'wa', value: 'asesoria' },
+        { label: 'Ver las 3 opciones', next: 'start' },
+      ],
+    },
+  };
+
+  function initDemoChat() {
+    const root = document.getElementById('humo-demo-chat');
+    if (!root || root.dataset.ready === '1') return;
+    root.dataset.ready = '1';
+
+    const waBase = root.dataset.waBase || 'https://wa.me/523335982161';
+    const toggle = document.getElementById('humo-chat-toggle');
+    const panel = document.getElementById('humo-chat-panel');
+    const closeBtn = document.getElementById('humo-chat-close');
+    const messages = document.getElementById('humo-chat-messages');
+    const actions = document.getElementById('humo-chat-actions');
+
+    if (!toggle || !panel || !messages || !actions) return;
+
+    let interest = 'solucion digital';
+    let openedOnce = false;
+
+    function openPanel() {
+      panel.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+      root.classList.add('humo-chat--open');
+      if (!openedOnce) {
+        openedOnce = true;
+        renderStep('start');
+      }
+    }
+
+    function closePanel() {
+      panel.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      root.classList.remove('humo-chat--open');
+    }
+
+    function appendBot(text) {
+      const row = document.createElement('div');
+      row.className = 'humo-chat__row humo-chat__row--bot';
+      const bubble = document.createElement('div');
+      bubble.className = 'humo-chat__bubble humo-chat__bubble--bot';
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function appendUser(text) {
+      const row = document.createElement('div');
+      row.className = 'humo-chat__row humo-chat__row--user';
+      const bubble = document.createElement('div');
+      bubble.className = 'humo-chat__bubble humo-chat__bubble--user';
+      bubble.textContent = text;
+      row.appendChild(bubble);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function buildWaUrl(topic) {
+      const msg = 'Hola Humo, me interesa: ' + topic + '. Vi la demo en la pagina y quiero una propuesta.';
+      return waBase + '?text=' + encodeURIComponent(msg);
+    }
+
+    function renderStep(stepId) {
+      const step = FLOW[stepId];
+      if (!step) return;
+
+      appendBot(step.bot);
+      actions.innerHTML = '';
+      if (!step.options) return;
+
+      for (const opt of step.options) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'humo-chat__option';
+        btn.textContent = opt.label;
+
+        btn.addEventListener('click', function () {
+          appendUser(opt.label);
+          actions.innerHTML = '';
+          if (opt.value) interest = opt.value;
+
+          if (opt.next === 'wa') {
+            const url = buildWaUrl(interest);
+            appendBot('Te abro WhatsApp con el mensaje listo. Hablamos!');
+            const link = document.createElement('a');
+            link.href = url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.className = 'humo-chat__wa';
+            link.textContent = 'Continuar en WhatsApp';
+            actions.appendChild(link);
+
+            const again = document.createElement('button');
+            again.type = 'button';
+            again.className = 'humo-chat__option humo-chat__option--ghost';
+            again.textContent = 'Empezar de nuevo';
+            again.addEventListener('click', function () {
+              messages.innerHTML = '';
+              interest = 'solucion digital';
+              renderStep('start');
+            });
+            actions.appendChild(again);
+            return;
+          }
+
+          setTimeout(function () {
+            renderStep(opt.next);
+          }, 280);
+        });
+
+        actions.appendChild(btn);
+      }
+    }
+
+    toggle.addEventListener('click', function () {
+      if (panel.hidden) openPanel();
+      else closePanel();
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closePanel);
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !panel.hidden) closePanel();
+    });
+  }
+
+  initDemoChat();
+  document.addEventListener('astro:page-load', initDemoChat);
+</script>
