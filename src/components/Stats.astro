@@ -1,0 +1,83 @@
+---
+const stats = [
+  { value: 7, prefix: '< ', suffix: ' d\u00edas', label: 'Entrega t\u00edpica' },
+  { value: 3, prefix: '', suffix: '', label: 'Soluciones listas' },
+  { value: 100, prefix: '', suffix: '%', label: 'A tu medida' },
+];
+---
+
+<section
+  id="stats"
+  class="py-12 sm:py-16 border-y border-smoke-800/40"
+  aria-label="N\u00fameros clave"
+>
+  <div class="container-humo">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 text-center">
+      {stats.map((s) => (
+        <div class="flex flex-col items-center">
+          <p
+            class="text-4xl sm:text-5xl font-bold tracking-tight text-text-primary tabular-nums"
+            data-counter
+            data-target={s.value}
+            data-prefix={s.prefix}
+            data-suffix={s.suffix}
+          >
+            {s.prefix}0{s.suffix}
+          </p>
+          <p class="mt-2 text-sm text-text-secondary">{s.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function animateCounter(el) {
+    const target = Number(el.dataset.target || 0);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (prefersReduced) {
+      el.textContent = `${prefix}${target}${suffix}`;
+      return;
+    }
+
+    const duration = 1200;
+    const start = performance.now();
+
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const current = Math.round(eased * target);
+      el.textContent = `${prefix}${current}${suffix}`;
+      if (t < 1) requestAnimationFrame(frame);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function initCounters() {
+    const nodes = document.querySelectorAll('[data-counter]');
+    if (!nodes.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const el = entry.target;
+          if (el.dataset.animated === '1') continue;
+          el.dataset.animated = '1';
+          animateCounter(el);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    nodes.forEach((n) => observer.observe(n));
+  }
+
+  initCounters();
+  document.addEventListener('astro:page-load', initCounters);
+</script>
