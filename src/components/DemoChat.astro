@@ -3,6 +3,34 @@ const WA_BASE = 'https://wa.me/523335982161';
 ---
 
 <div id="humo-demo-chat" class="humo-chat" data-wa-base={WA_BASE}>
+  <div
+    id="humo-chat-panel"
+    class="humo-chat__panel"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="humo-chat-title"
+    data-state="closed"
+    hidden
+  >
+    <header class="humo-chat__header">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span class="h-2 w-2 rounded-full bg-accent-500 shrink-0 animate-pulse" aria-hidden="true"></span>
+        <div class="min-w-0">
+          <p id="humo-chat-title" class="text-sm font-semibold text-text-primary truncate">Asistente Humo</p>
+          <p class="text-xs text-text-muted">Demo interactiva · no es un bot real aún</p>
+        </div>
+      </div>
+      <button type="button" id="humo-chat-close" class="humo-chat__icon-btn" aria-label="Cerrar chat">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </header>
+
+    <div id="humo-chat-messages" class="humo-chat__messages" aria-live="polite"></div>
+    <div id="humo-chat-actions" class="humo-chat__actions"></div>
+  </div>
+
   <button
     type="button"
     id="humo-chat-toggle"
@@ -22,74 +50,47 @@ const WA_BASE = 'https://wa.me/523335982161';
       </svg>
     </span>
   </button>
-
-  <div
-    id="humo-chat-panel"
-    class="humo-chat__panel"
-    role="dialog"
-    aria-modal="false"
-    aria-labelledby="humo-chat-title"
-    hidden
-  >
-    <header class="humo-chat__header">
-      <div class="flex items-center gap-2.5 min-w-0">
-        <span class="h-2 w-2 rounded-full bg-accent-500 shrink-0 animate-pulse" aria-hidden="true"></span>
-        <div class="min-w-0">
-          <p id="humo-chat-title" class="text-sm font-semibold text-text-primary truncate">Asistente Humo</p>
-          <p class="text-xs text-text-muted">Demo interactiva · no es un bot real aun</p>
-        </div>
-      </div>
-      <button type="button" id="humo-chat-close" class="humo-chat__icon-btn" aria-label="Cerrar chat">
-        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </header>
-
-    <div id="humo-chat-messages" class="humo-chat__messages" aria-live="polite"></div>
-    <div id="humo-chat-actions" class="humo-chat__actions"></div>
-  </div>
 </div>
 
 <script>
   const FLOW = {
     start: {
       id: 'start',
-      bot: 'Hola! Soy el asistente demo de Humo. Que te interesa explorar?',
+      bot: '¡Hola! Soy el asistente demo de Humo. ¿Qué te interesa explorar?',
       options: [
-        { label: 'Pagina web rapida', next: 'web', value: 'web' },
+        { label: 'Página web rápida', next: 'web', value: 'web' },
         { label: 'Chatbot de WhatsApp', next: 'chatbot', value: 'chatbot' },
-        { label: 'Dashboard automatico', next: 'dashboard', value: 'dashboard' },
-        { label: 'Aun no lo se', next: 'unsure', value: 'asesoria' },
+        { label: 'Dashboard automático', next: 'dashboard', value: 'dashboard' },
+        { label: 'Aún no lo sé', next: 'unsure', value: 'asesoria' },
       ],
     },
     web: {
       id: 'web',
-      bot: 'Perfecto. En pocos dias puedes tener una pagina como esta: moderna, rapida y lista para compartir. Quieres que te armemos una propuesta?',
+      bot: 'Perfecto. En pocos días puedes tener una página como esta: moderna, rápida y lista para compartir. ¿Quieres que te armemos una propuesta?',
       options: [
-        { label: 'Si, por WhatsApp', next: 'wa', value: 'web' },
+        { label: 'Sí, por WhatsApp', next: 'wa', value: 'web' },
         { label: 'Ver otras opciones', next: 'start' },
       ],
     },
     chatbot: {
       id: 'chatbot',
-      bot: 'Un chatbot puede responder horarios, agendar y mandar recordatorios 24/7. Ideal para clinicas, restaurantes y servicios. Lo vemos para tu negocio?',
+      bot: 'Un chatbot puede responder horarios, agendar y mandar recordatorios 24/7. Ideal para clínicas, restaurantes y servicios. ¿Lo vemos para tu negocio?',
       options: [
-        { label: 'Si, por WhatsApp', next: 'wa', value: 'chatbot' },
+        { label: 'Sí, por WhatsApp', next: 'wa', value: 'chatbot' },
         { label: 'Ver otras opciones', next: 'start' },
       ],
     },
     dashboard: {
       id: 'dashboard',
-      bot: 'Con un dashboard ves ventas, platos top y reportes automaticos — como el demo de Brasa Fina. Control real sin sistemas caros. Te interesa?',
+      bot: 'Con un dashboard ves ventas, platos top y reportes automáticos — como el demo de Brasa Fina. Control real sin sistemas caros. ¿Te interesa?',
       options: [
-        { label: 'Si, por WhatsApp', next: 'wa', value: 'dashboard' },
+        { label: 'Sí, por WhatsApp', next: 'wa', value: 'dashboard' },
         { label: 'Ver otras opciones', next: 'start' },
       ],
     },
     unsure: {
       id: 'unsure',
-      bot: 'Sin problema. Cuentanos tu negocio y te recomendamos la solucion mas simple. Seguimos por WhatsApp?',
+      bot: 'Sin problema. Cuéntanos tu negocio y te recomendamos la solución más simple. ¿Seguimos por WhatsApp?',
       options: [
         { label: 'Escribir por WhatsApp', next: 'wa', value: 'asesoria' },
         { label: 'Ver las 3 opciones', next: 'start' },
@@ -111,11 +112,18 @@ const WA_BASE = 'https://wa.me/523335982161';
 
     if (!toggle || !panel || !messages || !actions) return;
 
-    let interest = 'solucion digital';
+    let interest = 'solución digital';
     let openedOnce = false;
+    let closingTimer = null;
 
     function openPanel() {
+      if (closingTimer) {
+        clearTimeout(closingTimer);
+        closingTimer = null;
+      }
       panel.hidden = false;
+      void panel.offsetWidth;
+      panel.dataset.state = 'open';
       toggle.setAttribute('aria-expanded', 'true');
       root.classList.add('humo-chat--open');
       if (!openedOnce) {
@@ -125,9 +133,28 @@ const WA_BASE = 'https://wa.me/523335982161';
     }
 
     function closePanel() {
-      panel.hidden = true;
+      panel.dataset.state = 'closing';
       toggle.setAttribute('aria-expanded', 'false');
       root.classList.remove('humo-chat--open');
+      closingTimer = setTimeout(function () {
+        panel.hidden = true;
+        panel.dataset.state = 'closed';
+        closingTimer = null;
+      }, 220);
+    }
+
+    function appendTyping() {
+      const row = document.createElement('div');
+      row.className = 'humo-chat__row humo-chat__row--bot';
+      row.dataset.typing = '1';
+      const dots = document.createElement('div');
+      dots.className = 'humo-chat__typing';
+      dots.setAttribute('aria-hidden', 'true');
+      dots.innerHTML = '<span></span><span></span><span></span>';
+      row.appendChild(dots);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+      return row;
     }
 
     function appendBot(text) {
@@ -153,7 +180,7 @@ const WA_BASE = 'https://wa.me/523335982161';
     }
 
     function buildWaUrl(topic) {
-      const msg = 'Hola Humo, me interesa: ' + topic + '. Vi la demo en la pagina y quiero una propuesta.';
+      const msg = 'Hola Humo, me interesa: ' + topic + '. Vi la demo en la página y quiero una propuesta.';
       return waBase + '?text=' + encodeURIComponent(msg);
     }
 
@@ -161,57 +188,69 @@ const WA_BASE = 'https://wa.me/523335982161';
       const step = FLOW[stepId];
       if (!step) return;
 
-      appendBot(step.bot);
       actions.innerHTML = '';
-      if (!step.options) return;
+      const typing = appendTyping();
 
-      for (const opt of step.options) {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'humo-chat__option';
-        btn.textContent = opt.label;
+      setTimeout(function () {
+        typing.remove();
+        appendBot(step.bot);
+        if (!step.options) return;
 
-        btn.addEventListener('click', function () {
-          appendUser(opt.label);
-          actions.innerHTML = '';
-          if (opt.value) interest = opt.value;
+        for (const opt of step.options) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'humo-chat__option';
+          btn.textContent = opt.label;
 
-          if (opt.next === 'wa') {
-            const url = buildWaUrl(interest);
-            appendBot('Te abro WhatsApp con el mensaje listo. Hablamos!');
-            const link = document.createElement('a');
-            link.href = url;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.className = 'humo-chat__wa';
-            link.textContent = 'Continuar en WhatsApp';
-            actions.appendChild(link);
+          btn.addEventListener('click', function () {
+            appendUser(opt.label);
+            actions.innerHTML = '';
+            if (opt.value) interest = opt.value;
 
-            const again = document.createElement('button');
-            again.type = 'button';
-            again.className = 'humo-chat__option humo-chat__option--ghost';
-            again.textContent = 'Empezar de nuevo';
-            again.addEventListener('click', function () {
-              messages.innerHTML = '';
-              interest = 'solucion digital';
-              renderStep('start');
-            });
-            actions.appendChild(again);
-            return;
-          }
+            if (opt.next === 'wa') {
+              const typingWa = appendTyping();
+              setTimeout(function () {
+                typingWa.remove();
+                const url = buildWaUrl(interest);
+                appendBot('Te abro WhatsApp con el mensaje listo. ¡Hablamos!');
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.className = 'humo-chat__wa';
+                link.textContent = 'Continuar en WhatsApp';
+                actions.appendChild(link);
 
-          setTimeout(function () {
-            renderStep(opt.next);
-          }, 280);
-        });
+                const again = document.createElement('button');
+                again.type = 'button';
+                again.className = 'humo-chat__option humo-chat__option--ghost';
+                again.textContent = 'Empezar de nuevo';
+                again.addEventListener('click', function () {
+                  messages.innerHTML = '';
+                  interest = 'solución digital';
+                  renderStep('start');
+                });
+                actions.appendChild(again);
+              }, 420);
+              return;
+            }
 
-        actions.appendChild(btn);
-      }
+            setTimeout(function () {
+              renderStep(opt.next);
+            }, 320);
+          });
+
+          actions.appendChild(btn);
+        }
+      }, 480);
     }
 
     toggle.addEventListener('click', function () {
-      if (panel.hidden) openPanel();
-      else closePanel();
+      if (panel.hidden || panel.dataset.state === 'closed' || panel.dataset.state === 'closing') {
+        openPanel();
+      } else {
+        closePanel();
+      }
     });
 
     if (closeBtn) {
@@ -219,7 +258,7 @@ const WA_BASE = 'https://wa.me/523335982161';
     }
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && !panel.hidden) closePanel();
+      if (e.key === 'Escape' && panel.dataset.state === 'open') closePanel();
     });
   }
 
