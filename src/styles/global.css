@@ -2,7 +2,6 @@
 
 /* ===== Tema Humo - Smoke Elegant ===== */
 @theme {
-  /* Neutrales humo */
   --color-smoke-50: #f8f9fa;
   --color-smoke-100: #f1f3f5;
   --color-smoke-200: #e9ecef;
@@ -15,28 +14,23 @@
   --color-smoke-900: #212529;
   --color-smoke-950: #0a0b0c;
 
-  /* Acento principal - Teal moderno y confiable */
   --color-accent-400: #2dd4bf;
   --color-accent-500: #14b8a6;
   --color-accent-600: #0d9488;
   --color-accent-700: #0f766e;
 
-  /* Superficies */
   --color-surface: #0a0b0c;
   --color-surface-elevated: #121317;
   --color-surface-card: #18181b;
 
-  /* Texto */
   --color-text-primary: #f8fafc;
   --color-text-secondary: #94a3b8;
   --color-text-muted: #64748b;
 
-  /* Tipografía fluida */
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Base */
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
@@ -50,17 +44,14 @@ body {
   min-height: 100vh;
 }
 
-/* Tipografía fluida elegante */
 h1, h2, h3, h4 {
   @apply font-display tracking-tight text-balance;
 }
 
-/* Focus visible accesible */
 :focus-visible {
   @apply outline-2 outline-offset-2 outline-accent-500;
 }
 
-/* Reducir motion */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -72,7 +63,6 @@ h1, h2, h3, h4 {
   }
 }
 
-/* Utilidades personalizadas */
 .container-humo {
   @apply mx-auto max-w-6xl px-4 sm:px-6 lg:px-8;
 }
@@ -100,7 +90,6 @@ h1, h2, h3, h4 {
          active:scale-[0.98];
 }
 
-/* Animación sutil de entrada */
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -120,3 +109,119 @@ h1, h2, h3, h4 {
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
 .delay-400 { animation-delay: 400ms; }
+
+.humo-input {
+  @apply w-full rounded-xl border border-smoke-700/70 bg-surface-elevated px-4 py-3
+         text-sm text-text-primary placeholder:text-text-muted
+         transition-colors duration-200
+         focus:border-accent-500/70 focus:ring-1 focus:ring-accent-500/40 focus:outline-none;
+}
+
+.humo-chat {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.humo-chat__toggle {
+  @apply relative flex h-14 w-14 items-center justify-center rounded-full
+         bg-accent-500 text-smoke-950 shadow-lg shadow-accent-500/25
+         transition-transform duration-200 hover:scale-105 active:scale-95
+         focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+}
+
+.humo-chat__toggle-close {
+  display: none;
+}
+
+.humo-chat--open .humo-chat__toggle-icon {
+  display: none;
+}
+
+.humo-chat--open .humo-chat__toggle-close {
+  display: block;
+}
+
+.humo-chat__panel {
+  width: min(22rem, calc(100vw - 2rem));
+  max-height: min(28rem, calc(100vh - 6rem));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  @apply rounded-2xl border border-smoke-700/70 bg-surface-elevated shadow-2xl shadow-black/40;
+}
+
+.humo-chat__header {
+  @apply flex items-center justify-between gap-3 border-b border-smoke-800/70 px-4 py-3;
+}
+
+.humo-chat__icon-btn {
+  @apply rounded-lg p-1.5 text-text-muted transition-colors hover:bg-smoke-800/50 hover:text-text-primary;
+}
+
+.humo-chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  min-height: 10rem;
+}
+
+.humo-chat__row {
+  display: flex;
+}
+
+.humo-chat__row--bot {
+  justify-content: flex-start;
+}
+
+.humo-chat__row--user {
+  justify-content: flex-end;
+}
+
+.humo-chat__bubble {
+  max-width: 85%;
+  @apply rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed;
+}
+
+.humo-chat__bubble--bot {
+  @apply rounded-bl-md bg-smoke-800/80 text-text-secondary;
+}
+
+.humo-chat__bubble--user {
+  @apply rounded-br-md bg-accent-500/20 text-text-primary;
+}
+
+.humo-chat__actions {
+  @apply flex flex-col gap-2 border-t border-smoke-800/70 p-3;
+}
+
+.humo-chat__option {
+  @apply w-full rounded-xl border border-smoke-700/60 bg-surface-card px-3 py-2.5
+         text-left text-sm font-medium text-text-primary
+         transition-colors hover:border-accent-500/50 hover:bg-accent-500/10;
+}
+
+.humo-chat__option--ghost {
+  @apply border-transparent bg-transparent text-text-muted hover:text-text-primary;
+}
+
+.humo-chat__wa {
+  @apply flex w-full items-center justify-center gap-2 rounded-xl
+         bg-accent-500 px-3 py-2.5 text-sm font-semibold text-smoke-950
+         transition-colors hover:bg-accent-400;
+}
+
+@media (max-width: 380px) {
+  .humo-chat {
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+}
