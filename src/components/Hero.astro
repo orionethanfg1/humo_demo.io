@@ -1,6 +1,6 @@
 ---
 import { heroSmoke } from '../data/heroSmoke';
-const base = import.meta.env.BASE_URL;
+import { logoFull } from '../data/logoFull';
 ---
 
 <section class="relative overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32">
@@ -21,11 +21,11 @@ const base = import.meta.env.BASE_URL;
     <div class="mx-auto max-w-3xl text-center">
       <div class="animate-fade-up mb-6 flex justify-center">
         <img
-          src={`${base}images/logo-mark.svg`}
+          src={logoFull}
           alt="Humo"
-          width="56"
-          height="56"
-          class="h-14 w-14 drop-shadow-[0_0_24px_rgba(45,212,191,0.35)]"
+          width="160"
+          height="215"
+          class="h-20 w-auto object-contain drop-shadow-[0_0_28px_rgba(45,212,191,0.35)]"
           decoding="async"
         />
       </div>
@@ -36,23 +36,23 @@ const base = import.meta.env.BASE_URL;
 
       <h1 class="animate-fade-up delay-100 text-4xl font-bold tracking-tight text-text-primary sm:text-5xl lg:text-6xl text-balance">
         Soluciones digitales
-        <span class="text-gradient"> claras, r\u00e1pidas</span>
+        <span class="text-gradient"> claras, rápidas</span>
         <br class="hidden sm:block" /> y a tu medida
       </h1>
 
       <p class="animate-fade-up delay-200 mt-6 text-lg leading-relaxed text-text-secondary sm:text-xl max-w-2xl mx-auto">
-        P\u00e1ginas web listas en d\u00edas, chatbots que atienden 24/7 y dashboards que te dan control real de tu negocio. Sin sistemas caros ni complicaciones.
+        Páginas web listas en días, chatbots que atienden 24/7 y dashboards que te dan control real de tu negocio. Sin sistemas caros ni complicaciones.
       </p>
 
       <div class="animate-fade-up delay-300 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="#contacto" class="btn-primary min-w-[180px]">Quiero mi soluci\u00f3n</a>
+        <a href="#contacto" class="btn-primary min-w-[180px]">Quiero mi solución</a>
         <a href="#demos" class="btn-secondary min-w-[180px]">Ver demos en vivo</a>
       </div>
 
       <div class="animate-fade-up delay-400 mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-text-muted">
         <span class="flex items-center gap-2">
           <svg class="h-4 w-4 text-accent-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-          Entrega en d\u00edas
+          Entrega en días
         </span>
         <span class="flex items-center gap-2">
           <svg class="h-4 w-4 text-accent-500" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
