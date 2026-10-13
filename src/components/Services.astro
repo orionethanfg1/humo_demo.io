@@ -30,7 +30,7 @@ const services = [
 
 <section id="servicios" class="py-20 sm:py-28">
   <div class="container-humo">
-    <div class="mx-auto max-w-2xl text-center mb-14">
+    <div class="mx-auto max-w-2xl text-center mb-14" data-reveal>
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
         Lo que resolvemos
       </h2>
@@ -40,8 +40,12 @@ const services = [
     </div>
 
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((s) => (
-        <article class="card-humo overflow-hidden flex flex-col">
+      {services.map((s, i) => (
+        <article
+          class="card-humo card-humo--interactive overflow-hidden flex flex-col"
+          data-reveal
+          style={`--reveal-delay: ${i * 90}ms`}
+        >
           <div class="aspect-[16/10] overflow-hidden bg-surface-elevated">
             <img
               src={s.image}

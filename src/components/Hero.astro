@@ -8,13 +8,19 @@ import { logoMark } from '../data/logoMark';
     <img
       src={heroSmoke}
       alt=""
-      class="h-full w-full object-cover opacity-60"
+      class="h-full w-full object-cover opacity-50"
       loading="eager"
       decoding="async"
       width="480"
       height="320"
     />
-    <div class="absolute inset-0 bg-gradient-to-b from-surface/80 via-surface/55 to-surface"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-surface/75 via-surface/55 to-surface"></div>
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-ambient" aria-hidden="true">
+      <div class="hero-ambient__orb hero-ambient__orb--a"></div>
+      <div class="hero-ambient__orb hero-ambient__orb--b"></div>
+      <div class="hero-ambient__orb hero-ambient__orb--c"></div>
+    </div>
   </div>
 
   <div class="container-humo relative">

@@ -1,0 +1,104 @@
+---
+const comparisons = [
+  {
+    before: 'Sin presencia digital clara',
+    after: 'Página lista para compartir en días',
+  },
+  {
+    before: 'WhatsApp manual y mensajes perdidos',
+    after: 'Respuestas y agenda 24/7',
+  },
+  {
+    before: 'Números en hojas sueltas',
+    after: 'Dashboard con ventas y tendencias',
+  },
+];
+
+const metrics = [
+  { value: '3×', label: 'Más consultas visibles', note: 'Escenario demo típico' },
+  { value: '24/7', label: 'Atención automática', note: 'Chatbot siempre disponible' },
+  { value: '< 22', label: 'Días a entrega', note: 'Según alcance acordado' },
+];
+
+const quotes = [
+  {
+    name: 'Laura M.',
+    role: 'Clínica dental (demo)',
+    text: 'Ver el chatbot agendar solo nos convenció: menos llamadas, mismos pacientes mejor atendidos.',
+  },
+  {
+    name: 'Diego R.',
+    role: 'Restaurante (demo)',
+    text: 'El tablero de Brasa Fina muestra en segundos lo que antes revisábamos a ciegas en Excel.',
+  },
+  {
+    name: 'Ana S.',
+    role: 'Retail local (demo)',
+    text: 'Pasamos de “te mando el menú por foto” a una web clara que ya compartimos con clientes.',
+  },
+];
+---
+
+<section id="resultados" class="py-20 sm:py-28 bg-surface-elevated/30" aria-labelledby="resultados-title">
+  <div class="container-humo">
+    <div class="mx-auto max-w-2xl text-center mb-14" data-reveal>
+      <h2 id="resultados-title" class="text-3xl font-bold tracking-tight sm:text-4xl">
+        Antes y después
+      </h2>
+      <p class="mt-4 text-lg text-text-secondary">
+        Muestras orientativas de lo que cambia cuando digitalizas lo esencial — sin sistemas caros.
+      </p>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-3 mb-14">
+      {comparisons.map((c, i) => (
+        <article
+          class="card-humo p-5 sm:p-6"
+          data-reveal
+          style={`--reveal-delay: ${i * 80}ms`}
+        >
+          <p class="text-xs font-medium uppercase tracking-wider text-text-muted mb-2">Antes</p>
+          <p class="text-sm text-text-secondary line-through decoration-smoke-600/80">{c.before}</p>
+          <div class="my-4 h-px bg-gradient-to-r from-transparent via-accent-500/40 to-transparent"></div>
+          <p class="text-xs font-medium uppercase tracking-wider text-accent-400 mb-2">Después</p>
+          <p class="text-sm font-medium text-text-primary">{c.after}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-3 mb-16">
+      {metrics.map((m, i) => (
+        <div
+          class="text-center rounded-2xl border border-smoke-800/50 bg-surface-card/50 px-4 py-8"
+          data-reveal="scale"
+          style={`--reveal-delay: ${i * 90}ms`}
+        >
+          <p class="text-4xl sm:text-5xl font-bold text-gradient tabular-nums">{m.value}</p>
+          <p class="mt-2 text-sm font-medium text-text-primary">{m.label}</p>
+          <p class="mt-1 text-xs text-text-muted">{m.note}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mx-auto max-w-2xl text-center mb-10" data-reveal>
+      <h3 class="text-xl font-semibold text-text-primary">Lo que dirían tus futuros clientes</h3>
+      <p class="mt-2 text-sm text-text-muted">Testimonios de escenarios demo — ilustrativos, no casos reales publicados.</p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      {quotes.map((q, i) => (
+        <blockquote
+          class="card-humo card-humo--interactive p-6 flex flex-col"
+          data-reveal
+          style={`--reveal-delay: ${i * 100}ms`}
+        >
+          <p class="text-sm leading-relaxed text-text-secondary flex-1">“{q.text}”</p>
+          <footer class="mt-5 pt-4 border-t border-smoke-800/50">
+            <p class="text-sm font-semibold text-text-primary">{q.name}</p>
+            <p class="text-xs text-text-muted">{q.role}</p>
+          </footer>
+        </blockquote>
+      ))}
+    </div>
+  </div>
+</section>
