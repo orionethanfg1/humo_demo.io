@@ -1,29 +1,38 @@
 ---
 const demos = [
   {
+    id: 'web',
     title: 'Esta página',
     subtitle: 'Página web rápida',
     description: 'La misma que estás viendo. Diseño moderno, ultra rápida y lista para clientes.',
     status: 'En vivo',
+    action: 'scroll',
+    cta: 'Estás aquí',
   },
   {
+    id: 'sonrisas',
     title: 'Sonrisas MX',
     subtitle: 'Chatbot WhatsApp',
     description: 'Agenda citas, responde horarios y envía recordatorios para una clínica dental.',
-    status: 'Próximamente',
+    status: 'Probar demo',
+    action: 'modal-chat',
+    cta: 'Abrir demo',
   },
   {
+    id: 'brasa',
     title: 'Brasa Fina',
     subtitle: 'Dashboard de ventas',
     description: 'Restaurante elegante: ventas del día, platos más pedidos y reportes automáticos en Sheets.',
-    status: 'Próximamente',
+    status: 'Probar demo',
+    action: 'modal-dash',
+    cta: 'Abrir demo',
   },
 ];
 ---
 
 <section id="demos" class="py-20 sm:py-28">
   <div class="container-humo">
-    <div class="mx-auto max-w-2xl text-center mb-14">
+    <div class="mx-auto max-w-2xl text-center mb-14" data-reveal>
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Demos en vivo</h2>
       <p class="mt-4 text-lg text-text-secondary">
         Muestras reales de lo que puedes tener. No promesas: resultados visibles.
@@ -31,18 +40,294 @@ const demos = [
     </div>
 
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {demos.map((d) => (
-        <article class="card-humo p-6 flex flex-col">
+      {demos.map((d, i) => (
+        <article
+          class="card-humo card-humo--interactive p-6 flex flex-col"
+          data-reveal
+          style={`--reveal-delay: ${i * 90}ms`}
+        >
           <div class="flex items-center justify-between mb-4">
-            <span class={`text-xs font-medium px-2.5 py-1 rounded-full ${d.status === 'En vivo' ? 'bg-accent-500/15 text-accent-400' : 'bg-smoke-700/40 text-text-muted'}`}>
+            <span
+              class={`text-xs font-medium px-2.5 py-1 rounded-full ${
+                d.status === 'En vivo'
+                  ? 'bg-accent-500/15 text-accent-400'
+                  : 'bg-accent-500/10 text-accent-400 border border-accent-500/25'
+              }`}
+            >
               {d.status}
             </span>
           </div>
           <h3 class="text-lg font-semibold text-text-primary">{d.title}</h3>
           <p class="text-sm text-accent-400 mt-1">{d.subtitle}</p>
           <p class="mt-3 flex-1 text-sm text-text-secondary leading-relaxed">{d.description}</p>
+          {d.action === 'scroll' ? (
+            <span class="mt-5 text-sm font-medium text-text-muted">{d.cta}</span>
+          ) : (
+            <button
+              type="button"
+              class="btn-secondary mt-5 w-full text-sm"
+              data-demo-open={d.id}
+            >
+              {d.cta}
+            </button>
+          )}
         </article>
       ))}
     </div>
   </div>
 </section>
+
+<div id="modal-sonrisas" class="humo-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-sonrisas-title">
+  <div class="humo-modal__backdrop" data-demo-close></div>
+  <div class="humo-modal__dialog">
+    <header class="humo-modal__header">
+      <div class="min-w-0">
+        <p id="modal-sonrisas-title" class="text-sm font-semibold text-text-primary">Sonrisas MX · Chatbot</p>
+        <p class="text-xs text-text-muted">Demo de flujo · clínica dental ficticia</p>
+      </div>
+      <button type="button" class="humo-chat__icon-btn" data-demo-close aria-label="Cerrar">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </header>
+    <div class="humo-modal__body space-y-3">
+      <div class="humo-chat__messages !min-h-0 max-h-64 border border-smoke-800/50 rounded-xl" id="sonrisas-msgs"></div>
+      <div class="flex flex-col gap-2" id="sonrisas-actions"></div>
+      <p class="text-xs text-text-muted text-center pt-1">
+        Así responde un bot de WhatsApp real: horarios, ubicación y agenda sin personal extra.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div id="modal-brasa" class="humo-modal" hidden role="dialog" aria-modal="true" aria-labelledby="modal-brasa-title">
+  <div class="humo-modal__backdrop" data-demo-close></div>
+  <div class="humo-modal__dialog" style="width: min(40rem, 100%)">
+    <header class="humo-modal__header">
+      <div class="min-w-0">
+        <p id="modal-brasa-title" class="text-sm font-semibold text-text-primary">Brasa Fina · Dashboard</p>
+        <p class="text-xs text-text-muted">Demo de ventas · restaurante elegante ficticio</p>
+      </div>
+      <button type="button" class="humo-chat__icon-btn" data-demo-close aria-label="Cerrar">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </header>
+    <div class="humo-modal__body space-y-5">
+      <div class="grid grid-cols-3 gap-3">
+        <div class="rounded-xl border border-smoke-800/60 bg-surface-card/80 p-3 text-center">
+          <p class="text-xs text-text-muted">Hoy</p>
+          <p class="mt-1 text-xl font-bold text-text-primary tabular-nums" data-brasa-kpi="today">$0</p>
+        </div>
+        <div class="rounded-xl border border-smoke-800/60 bg-surface-card/80 p-3 text-center">
+          <p class="text-xs text-text-muted">Semana</p>
+          <p class="mt-1 text-xl font-bold text-text-primary tabular-nums" data-brasa-kpi="week">$0</p>
+        </div>
+        <div class="rounded-xl border border-smoke-800/60 bg-surface-card/80 p-3 text-center">
+          <p class="text-xs text-text-muted">Mesas</p>
+          <p class="mt-1 text-xl font-bold text-accent-400 tabular-nums" data-brasa-kpi="tables">0</p>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-sm font-medium text-text-primary mb-3">Platos más pedidos</p>
+        <ul class="space-y-3" id="brasa-bars">
+          <li>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-text-secondary">Rib eye a la brasa</span>
+              <span class="text-text-muted">42</span>
+            </div>
+            <div class="demo-bar" style="--bar: 92%"><span></span></div>
+          </li>
+          <li>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-text-secondary">Pasta trufa</span>
+              <span class="text-text-muted">31</span>
+            </div>
+            <div class="demo-bar" style="--bar: 68%"><span></span></div>
+          </li>
+          <li>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-text-secondary">Tiramisú casa</span>
+              <span class="text-text-muted">27</span>
+            </div>
+            <div class="demo-bar" style="--bar: 55%"><span></span></div>
+          </li>
+          <li>
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-text-secondary">Vino reserva</span>
+              <span class="text-text-muted">19</span>
+            </div>
+            <div class="demo-bar" style="--bar: 40%"><span></span></div>
+          </li>
+        </ul>
+      </div>
+
+      <p class="text-xs text-text-muted text-center">
+        Datos de ejemplo. En producción se conectan a Google Sheets / Looker Studio en tiempo casi real.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initDemoModals() {
+    if (document.documentElement.dataset.demosReady === '1') return;
+    document.documentElement.dataset.demosReady = '1';
+
+    const modalSonrisas = document.getElementById('modal-sonrisas');
+    const modalBrasa = document.getElementById('modal-brasa');
+
+    function openModal(el) {
+      if (!el) return;
+      el.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeAll() {
+      if (modalSonrisas) modalSonrisas.hidden = true;
+      if (modalBrasa) modalBrasa.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-demo-open]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-demo-open');
+        if (id === 'sonrisas') {
+          openModal(modalSonrisas);
+          startSonrisas();
+        }
+        if (id === 'brasa') {
+          openModal(modalBrasa);
+          startBrasa();
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-demo-close]').forEach((el) => {
+      el.addEventListener('click', closeAll);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAll();
+    });
+
+    const FLOW = {
+      start: {
+        bot: '¡Hola! Soy el asistente de Sonrisas MX. ¿En qué te ayudo?',
+        options: [
+          { label: 'Horarios y ubicación', next: 'hours' },
+          { label: 'Agendar cita', next: 'book' },
+          { label: 'Recordatorio de cita', next: 'remind' },
+        ],
+      },
+      hours: {
+        bot: 'Lun–Vie 9:00–19:00 · Sáb 9:00–14:00. Av. Ejemplo 123, Guadalajara. ¿Agendamos?',
+        options: [
+          { label: 'Sí, agendar', next: 'book' },
+          { label: 'Volver', next: 'start' },
+        ],
+      },
+      book: {
+        bot: 'Perfecto. ¿Qué día te acomoda?',
+        options: [
+          { label: 'Mañana 10:00', next: 'done' },
+          { label: 'Jueves 16:30', next: 'done' },
+          { label: 'Volver', next: 'start' },
+        ],
+      },
+      remind: {
+        bot: 'Puedo enviarte un recordatorio 24 h antes por WhatsApp. ¿Lo activamos en tu próxima cita?',
+        options: [
+          { label: 'Sí, activar', next: 'done' },
+          { label: 'Volver', next: 'start' },
+        ],
+      },
+      done: {
+        bot: '¡Listo! En un bot real esto quedaría confirmado en el calendario de la clínica. Esto es solo una demo de Humo.',
+        options: [{ label: 'Empezar de nuevo', next: 'start' }],
+      },
+    };
+
+    let sonrisasStarted = false;
+
+    function startSonrisas() {
+      const msgs = document.getElementById('sonrisas-msgs');
+      const actions = document.getElementById('sonrisas-actions');
+      if (!msgs || !actions) return;
+      if (!sonrisasStarted) {
+        sonrisasStarted = true;
+        msgs.innerHTML = '';
+        renderSonrisas('start');
+      }
+    }
+
+    function appendBubble(container, text, who) {
+      const row = document.createElement('div');
+      row.className = 'humo-chat__row humo-chat__row--' + who;
+      const b = document.createElement('div');
+      b.className = 'humo-chat__bubble humo-chat__bubble--' + who;
+      b.textContent = text;
+      row.appendChild(b);
+      container.appendChild(row);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function renderSonrisas(stepId) {
+      const step = FLOW[stepId];
+      const msgs = document.getElementById('sonrisas-msgs');
+      const actions = document.getElementById('sonrisas-actions');
+      if (!step || !msgs || !actions) return;
+      actions.innerHTML = '';
+      appendBubble(msgs, step.bot, 'bot');
+      for (const opt of step.options) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'humo-chat__option';
+        btn.textContent = opt.label;
+        btn.addEventListener('click', () => {
+          appendBubble(msgs, opt.label, 'user');
+          actions.innerHTML = '';
+          setTimeout(() => renderSonrisas(opt.next), 280);
+        });
+        actions.appendChild(btn);
+      }
+    }
+
+    function animateValue(el, end, prefix, duration) {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        el.textContent = prefix + end.toLocaleString('es-MX');
+        return;
+      }
+      const start = performance.now();
+      function frame(now) {
+        const t = Math.min(1, (now - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const current = Math.round(eased * end);
+        el.textContent = prefix + current.toLocaleString('es-MX');
+        if (t < 1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    function startBrasa() {
+      const today = document.querySelector('[data-brasa-kpi="today"]');
+      const week = document.querySelector('[data-brasa-kpi="week"]');
+      const tables = document.querySelector('[data-brasa-kpi="tables"]');
+      if (today) animateValue(today, 18420, '$', 900);
+      if (week) animateValue(week, 96750, '$', 1100);
+      if (tables) animateValue(tables, 28, '', 700);
+      document.querySelectorAll('#brasa-bars .demo-bar').forEach((bar) => {
+        bar.classList.remove('is-on');
+        void bar.offsetWidth;
+        requestAnimationFrame(() => bar.classList.add('is-on'));
+      });
+    }
+  }
+
+  initDemoModals();
+  document.addEventListener('astro:page-load', initDemoModals);
+</script>
