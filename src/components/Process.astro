@@ -9,14 +9,14 @@ const steps = [
 
 <section id="proceso" class="py-20 sm:py-28 bg-surface-elevated/40">
   <div class="container-humo">
-    <div class="mx-auto max-w-2xl text-center mb-14">
+    <div class="mx-auto max-w-2xl text-center mb-14" data-reveal>
       <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Cómo trabajamos</h2>
       <p class="mt-4 text-lg text-text-secondary">Proceso simple, transparente y orientado a resultados.</p>
     </div>
 
     <ol class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-      {steps.map((step) => (
-        <li class="relative">
+      {steps.map((step, i) => (
+        <li class="relative" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
           <span class="text-4xl font-bold text-accent-500/20">{step.num}</span>
           <h3 class="mt-2 text-lg font-semibold text-text-primary">{step.title}</h3>
           <p class="mt-2 text-sm text-text-secondary leading-relaxed">{step.desc}</p>

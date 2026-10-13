@@ -6,12 +6,15 @@ import Stats from '../components/Stats.astro';
 import Services from '../components/Services.astro';
 import Process from '../components/Process.astro';
 import Demos from '../components/Demos.astro';
+import Results from '../components/Results.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import DemoChat from '../components/DemoChat.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 ---
 
 <BaseLayout>
+  <div id="top"></div>
   <Header />
   <main>
     <Hero />
@@ -19,8 +22,10 @@ import DemoChat from '../components/DemoChat.astro';
     <Services />
     <Process />
     <Demos />
+    <Results />
     <Contact />
   </main>
   <Footer />
   <DemoChat />
+  <ScrollReveal />
 </BaseLayout>
