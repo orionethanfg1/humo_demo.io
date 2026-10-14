@@ -1,0 +1,206 @@
+---
+import DemoLayout from '../../layouts/DemoLayout.astro';
+import { clinicMeta, sonrisasFlow } from '../../data/demos/sonrisasFlow';
+
+const flowJson = JSON.stringify(sonrisasFlow);
+const metaJson = JSON.stringify(clinicMeta);
+---
+
+<DemoLayout
+  title="Sonrisas MX — Chatbot"
+  description="Demo de chatbot tipo WhatsApp para clínica dental. 100% local, sin Dialogflow."
+  badge="Demo chatbot"
+>
+  <section class="container-humo py-8 sm:py-12">
+    <div class="mx-auto max-w-lg">
+      <div class="mb-6 text-center">
+        <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{clinicMeta.name}</h1>
+        <p class="mt-2 text-sm text-text-secondary">{clinicMeta.tagline}</p>
+        <p class="mt-1 text-xs text-text-muted">{clinicMeta.disclaimer}</p>
+      </div>
+
+      <div
+        id="wa-shell"
+        class="wa-shell rounded-2xl overflow-hidden border border-smoke-700/60 shadow-2xl shadow-black/40"
+        data-flow={flowJson}
+        data-meta={metaJson}
+      >
+        <header class="wa-header flex items-center gap-3 px-3 py-2.5">
+          <div class="h-10 w-10 rounded-full bg-teal-700/80 flex items-center justify-center text-lg shrink-0" aria-hidden="true">🦷</div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold text-white truncate">{clinicMeta.name}</p>
+            <p class="text-[11px] text-emerald-200/90">en línea · demo</p>
+          </div>
+          <button type="button" id="wa-reset" class="text-[11px] text-white/70 hover:text-white px-2 py-1 rounded-lg hover:bg-white/10">Reiniciar</button>
+        </header>
+
+        <div id="wa-messages" class="wa-messages" aria-live="polite"></div>
+        <div id="wa-actions" class="wa-actions"></div>
+        <div id="wa-footer" class="wa-footer hidden">
+          <button type="button" id="wa-ics" class="wa-ics-btn">Descargar cita (.ics)</button>
+        </div>
+      </div>
+
+      <div class="mt-6 grid grid-cols-3 gap-2 text-center text-xs text-text-muted">
+        <div class="rounded-xl border border-smoke-800/50 bg-surface-card/40 px-2 py-3">
+          <p class="font-semibold text-text-primary" id="stat-msgs">0</p>
+          <p>Mensajes</p>
+        </div>
+        <div class="rounded-xl border border-smoke-800/50 bg-surface-card/40 px-2 py-3">
+          <p class="font-semibold text-accent-400" id="stat-citas">0</p>
+          <p>Citas sim.</p>
+        </div>
+        <div class="rounded-xl border border-smoke-800/50 bg-surface-card/40 px-2 py-3">
+          <p class="font-semibold text-text-primary">100%</p>
+          <p>Local</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</DemoLayout>
+
+<style>
+  .wa-shell { background: #0b141a; }
+  .wa-header { background: #1f2c34; }
+  .wa-messages {
+    min-height: 22rem; max-height: min(50vh, 28rem); overflow-y: auto; padding: 0.75rem;
+    display: flex; flex-direction: column; gap: 0.4rem;
+    background: radial-gradient(ellipse at 20% 0%, rgba(20, 184, 166, 0.06), transparent 50%), #0b141a;
+  }
+  .wa-bubble { max-width: 82%; padding: 0.45rem 0.65rem 0.35rem; border-radius: 0.55rem; font-size: 0.875rem; line-height: 1.4; white-space: pre-wrap; word-break: break-word; }
+  .wa-row { display: flex; animation: wa-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .wa-row--bot { justify-content: flex-start; }
+  .wa-row--user { justify-content: flex-end; }
+  .wa-bubble--bot { background: #1f2c34; color: #e9edef; border-top-left-radius: 0.15rem; }
+  .wa-bubble--user { background: #005c4b; color: #e9edef; border-top-right-radius: 0.15rem; }
+  .wa-time { display: block; text-align: right; font-size: 0.65rem; opacity: 0.55; margin-top: 0.15rem; }
+  .wa-actions { display: flex; flex-direction: column; gap: 0.4rem; padding: 0.65rem; border-top: 1px solid rgba(255,255,255,0.06); background: #1f2c34; }
+  .wa-opt { width: 100%; text-align: left; padding: 0.55rem 0.75rem; border-radius: 0.65rem; border: 1px solid rgba(45,212,191,0.35); background: rgba(15,30,36,0.9); color: #e9edef; font-size: 0.8125rem; font-weight: 500; transition: background 0.2s, border-color 0.2s, transform 0.15s; }
+  .wa-opt:hover { background: rgba(20,184,166,0.12); border-color: rgba(45,212,191,0.55); }
+  .wa-opt:active { transform: scale(0.98); }
+  .wa-footer { padding: 0.5rem 0.65rem 0.75rem; background: #1f2c34; border-top: 1px solid rgba(255,255,255,0.04); }
+  .wa-footer.hidden { display: none; }
+  .wa-ics-btn { width: 100%; padding: 0.6rem; border-radius: 0.65rem; background: #14b8a6; color: #0a0b0c; font-size: 0.8125rem; font-weight: 600; }
+  .wa-ics-btn:hover { background: #2dd4bf; }
+  @keyframes wa-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .wa-row { animation: none; } }
+</style>
+
+<script>
+  function initSonrisasPage() {
+    const shell = document.getElementById('wa-shell');
+    if (!shell || shell.dataset.ready === '1') return;
+    shell.dataset.ready = '1';
+
+    const flow = JSON.parse(shell.dataset.flow || '{}');
+    const meta = JSON.parse(shell.dataset.meta || '{}');
+    const messages = document.getElementById('wa-messages');
+    const actions = document.getElementById('wa-actions');
+    const footer = document.getElementById('wa-footer');
+    const icsBtn = document.getElementById('wa-ics');
+    const resetBtn = document.getElementById('wa-reset');
+    const statMsgs = document.getElementById('stat-msgs');
+    const statCitas = document.getElementById('stat-citas');
+    if (!messages || !actions) return;
+
+    let msgCount = 0;
+    let citaCount = Number(localStorage.getItem('humo_sonrisas_citas') || '0');
+    let lastDay = '';
+    let lastTime = '';
+    if (statCitas) statCitas.textContent = String(citaCount);
+
+    function nowTime() {
+      return new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function append(text, who) {
+      const row = document.createElement('div');
+      row.className = 'wa-row wa-row--' + who;
+      const b = document.createElement('div');
+      b.className = 'wa-bubble wa-bubble--' + who;
+      b.textContent = text;
+      const t = document.createElement('span');
+      t.className = 'wa-time';
+      t.textContent = nowTime();
+      b.appendChild(t);
+      row.appendChild(b);
+      messages.appendChild(row);
+      messages.scrollTop = messages.scrollHeight;
+      msgCount += 1;
+      if (statMsgs) statMsgs.textContent = String(msgCount);
+    }
+
+    function buildIcs() {
+      const start = new Date();
+      start.setDate(start.getDate() + 1);
+      start.setHours(10, 0, 0, 0);
+      if (lastTime) {
+        const parts = lastTime.split(':').map(Number);
+        if (!Number.isNaN(parts[0])) start.setHours(parts[0], parts[1] || 0, 0, 0);
+      }
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+      function fmt(d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
+      const uid = 'sonrisas-demo-' + Date.now() + '@humo';
+      return [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Humo//Sonrisas Demo//ES',
+        'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
+        'UID:' + uid, 'DTSTAMP:' + fmt(new Date()), 'DTSTART:' + fmt(start), 'DTEND:' + fmt(end),
+        'SUMMARY:Cita dental — ' + (meta.name || 'Sonrisas MX'),
+        'DESCRIPTION:Cita simulada desde la demo de chatbot de Humo. Día: ' + (lastDay || 'mañana') + ' Hora: ' + (lastTime || '10:00'),
+        'LOCATION:' + (meta.address || ''), 'END:VEVENT', 'END:VCALENDAR'
+      ].join('\r\n');
+    }
+
+    function downloadIcs() {
+      const blob = new Blob([buildIcs()], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'cita-sonrisas-demo.ics'; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderStep(stepId) {
+      const step = flow[stepId];
+      if (!step) return;
+      actions.innerHTML = '';
+      if (footer) footer.classList.add('hidden');
+      append(step.bot, 'bot');
+      if (step.schedule) {
+        citaCount += 1;
+        localStorage.setItem('humo_sonrisas_citas', String(citaCount));
+        if (statCitas) statCitas.textContent = String(citaCount);
+        if (footer) footer.classList.remove('hidden');
+      }
+      if (!step.options) return;
+      for (const opt of step.options) {
+        const btn = document.createElement('button');
+        btn.type = 'button'; btn.className = 'wa-opt'; btn.textContent = opt.label;
+        btn.addEventListener('click', () => {
+          append(opt.label, 'user');
+          actions.innerHTML = '';
+          if (opt.value) {
+            if (stepId === 'book_day') lastDay = opt.value;
+            if (stepId === 'book_time') lastTime = opt.value;
+          }
+          setTimeout(() => renderStep(opt.next), 320);
+        });
+        actions.appendChild(btn);
+      }
+    }
+
+    function reset() {
+      messages.innerHTML = ''; actions.innerHTML = '';
+      if (footer) footer.classList.add('hidden');
+      msgCount = 0; if (statMsgs) statMsgs.textContent = '0';
+      lastDay = ''; lastTime = '';
+      renderStep('start');
+    }
+
+    icsBtn && icsBtn.addEventListener('click', downloadIcs);
+    resetBtn && resetBtn.addEventListener('click', reset);
+    renderStep('start');
+  }
+
+  initSonrisasPage();
+  document.addEventListener('astro:page-load', initSonrisasPage);
+</script>
