@@ -1,0 +1,158 @@
+---
+import DemoLayout from '../../layouts/DemoLayout.astro';
+import { webVariants } from '../../data/demos/webVariants';
+
+const variantsJson = JSON.stringify(webVariants);
+const base = import.meta.env.BASE_URL;
+---
+
+<DemoLayout
+  title="Página web rápida"
+  description="Demo de presencia web por industria. Cambia el giro y ve el resultado al instante."
+  badge="Demo web"
+>
+  <section class="container-humo py-8 sm:py-12" id="web-demo" data-variants={variantsJson}>
+    <div class="mb-8 text-center max-w-2xl mx-auto" data-reveal>
+      <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">Una web, tres giros</h1>
+      <p class="mt-2 text-sm text-text-secondary">
+        Así se ve una página lista para compartir. Cambia la industria — mismo esqueleto, mensaje a medida.
+      </p>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-2 mb-10" role="tablist" aria-label="Industria">
+      {
+        webVariants.map((v, i) => (
+          <button
+            type="button"
+            class:list={['web-tab', i === 0 && 'is-active']}
+            data-variant={v.id}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+          >
+            {v.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="mx-auto max-w-3xl card-humo overflow-hidden" data-reveal>
+      <div class="flex items-center gap-1.5 px-3 py-2 border-b border-smoke-800/50 bg-surface-elevated/80">
+        <span class="h-2.5 w-2.5 rounded-full bg-red-400/80"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-amber-400/80"></span>
+        <span class="h-2.5 w-2.5 rounded-full bg-emerald-400/80"></span>
+        <span class="ml-3 text-[11px] text-text-muted truncate" id="preview-url">sonrisas-mx.demo</span>
+      </div>
+
+      <div class="p-6 sm:p-10 text-center" id="preview-body" style={`--accent: ${webVariants[0].accent}`}>
+        <p class="text-xs font-medium tracking-wide uppercase mb-3" style="color: var(--accent)" id="preview-biz">
+          {webVariants[0].business}
+        </p>
+        <h2 class="text-3xl sm:text-4xl font-bold text-text-primary text-balance" id="preview-headline">
+          {webVariants[0].headline}
+        </h2>
+        <p class="mt-4 text-text-secondary max-w-lg mx-auto" id="preview-sub">
+          {webVariants[0].sub}
+        </p>
+        <button
+          type="button"
+          class="mt-8 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold text-smoke-950 transition-transform hover:scale-[1.02]"
+          style="background: var(--accent)"
+          id="preview-cta"
+        >
+          {webVariants[0].cta}
+        </button>
+
+        <div class="mt-12 grid sm:grid-cols-3 gap-4 text-left" id="preview-features">
+          {
+            webVariants[0].features.map((f) => (
+              <div class="rounded-xl border border-smoke-800/50 bg-surface-elevated/50 p-4">
+                <p class="text-sm font-semibold text-text-primary">{f.title}</p>
+                <p class="mt-1 text-xs text-text-secondary leading-relaxed">{f.desc}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a href={`${base}demo/bot/`} class="btn-secondary text-sm">Ver demo chatbot</a>
+      <a href={`${base}demo/dash/`} class="btn-secondary text-sm">Ver demo dashboard</a>
+      <a href={base} class="btn-primary text-sm">Volver a Humo</a>
+    </div>
+  </section>
+</DemoLayout>
+
+<style>
+  .web-tab {
+    padding: 0.45rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: #94a3b8;
+    border: 1px solid rgba(52, 58, 64, 0.8);
+    background: #121317;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .web-tab.is-active {
+    color: #2dd4bf;
+    border-color: rgba(45, 212, 191, 0.45);
+    background: rgba(20, 184, 166, 0.12);
+  }
+</style>
+
+<script>
+  function initWebDemo() {
+    const root = document.getElementById('web-demo');
+    if (!root || root.dataset.ready === '1') return;
+    root.dataset.ready = '1';
+
+    const variants = JSON.parse(root.dataset.variants || '[]');
+    const body = document.getElementById('preview-body');
+    const urlEl = document.getElementById('preview-url');
+    const biz = document.getElementById('preview-biz');
+    const headline = document.getElementById('preview-headline');
+    const sub = document.getElementById('preview-sub');
+    const cta = document.getElementById('preview-cta');
+    const features = document.getElementById('preview-features');
+
+    function apply(id) {
+      const v = variants.find((x) => x.id === id) || variants[0];
+      if (!v) return;
+      if (body) body.style.setProperty('--accent', v.accent);
+      if (urlEl) urlEl.textContent = v.business.toLowerCase().replace(/\s+/g, '-') + '.demo';
+      if (biz) biz.textContent = v.business;
+      if (headline) headline.textContent = v.headline;
+      if (sub) sub.textContent = v.sub;
+      if (cta) cta.textContent = v.cta;
+      if (features) {
+        features.innerHTML = v.features
+          .map(
+            (f) =>
+              '<div class="rounded-xl border border-smoke-800/50 bg-surface-elevated/50 p-4">' +
+              '<p class="text-sm font-semibold text-text-primary">' +
+              f.title +
+              '</p>' +
+              '<p class="mt-1 text-xs text-text-secondary leading-relaxed">' +
+              f.desc +
+              '</p></div>'
+          )
+          .join('');
+      }
+      document.querySelectorAll('.web-tab').forEach((tab) => {
+        const on = tab.getAttribute('data-variant') === v.id;
+        tab.classList.toggle('is-active', on);
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+    }
+
+    document.querySelectorAll('.web-tab').forEach((tab) => {
+      tab.addEventListener('click', () => apply(tab.getAttribute('data-variant') || 'dental'));
+    });
+
+    document.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-visible'));
+  }
+
+  initWebDemo();
+  document.addEventListener('astro:page-load', initWebDemo);
+</script>
