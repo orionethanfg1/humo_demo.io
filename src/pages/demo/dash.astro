@@ -1,0 +1,286 @@
+---
+import DemoLayout from '../../layouts/DemoLayout.astro';
+import {
+  restaurantMeta,
+  todayKpis,
+  weekSeries,
+  monthSeries,
+  topDishes,
+  toCsv,
+} from '../../data/demos/brasaData';
+
+const payload = JSON.stringify({
+  meta: restaurantMeta,
+  today: todayKpis,
+  week: weekSeries,
+  month: monthSeries,
+  dishes: topDishes,
+  csvWeek: toCsv('week'),
+  csvMonth: toCsv('month'),
+});
+---
+
+<DemoLayout
+  title="Brasa Fina — Dashboard"
+  description="Demo de dashboard de ventas para restaurante. Datos locales, sin Google Sheets ni Looker."
+  badge="Demo dashboard"
+>
+  <section class="container-humo py-8 sm:py-12" id="brasa-app" data-payload={payload}>
+    <div class="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-text-primary">{restaurantMeta.name}</h1>
+        <p class="mt-1 text-sm text-text-secondary">{restaurantMeta.tagline}</p>
+        <p class="mt-1 text-xs text-text-muted">{restaurantMeta.disclaimer}</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <div class="inline-flex rounded-full border border-smoke-700/60 p-1 bg-surface-elevated">
+          <button type="button" class="dash-range is-active" data-range="week">Semana</button>
+          <button type="button" class="dash-range" data-range="month">Mes</button>
+        </div>
+        <button type="button" id="btn-export" class="btn-secondary text-xs px-4 py-2">Exportar CSV</button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+      <article class="card-humo p-4 sm:p-5">
+        <p class="text-xs text-text-muted">Ventas hoy</p>
+        <p class="mt-1 text-2xl font-bold text-text-primary tabular-nums" data-kpi="sales">$0</p>
+        <p class="mt-1 text-xs text-accent-400">+{todayKpis.vsYesterdayPct}% vs ayer</p>
+      </article>
+      <article class="card-humo p-4 sm:p-5">
+        <p class="text-xs text-text-muted">Tickets</p>
+        <p class="mt-1 text-2xl font-bold text-text-primary tabular-nums" data-kpi="tickets">0</p>
+        <p class="mt-1 text-xs text-text-muted">órdenes del día</p>
+      </article>
+      <article class="card-humo p-4 sm:p-5">
+        <p class="text-xs text-text-muted">Ticket promedio</p>
+        <p class="mt-1 text-2xl font-bold text-text-primary tabular-nums" data-kpi="avg">$0</p>
+        <p class="mt-1 text-xs text-text-muted">por comanda</p>
+      </article>
+      <article class="card-humo p-4 sm:p-5">
+        <p class="text-xs text-text-muted">Mesas activas</p>
+        <p class="mt-1 text-2xl font-bold text-accent-400 tabular-nums" data-kpi="tables">0</p>
+        <p class="mt-1 text-xs text-text-muted">en servicio</p>
+      </article>
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-6 mb-8">
+      <article class="card-humo p-4 sm:p-6 lg:col-span-3">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-semibold text-text-primary">Ventas por periodo</h2>
+          <span class="text-xs text-text-muted" id="chart-caption">Últimos 7 días</span>
+        </div>
+        <div class="relative h-56 sm:h-64">
+          <canvas id="sales-chart" class="w-full h-full" aria-label="Gráfica de ventas"></canvas>
+        </div>
+      </article>
+
+      <article class="card-humo p-4 sm:p-6 lg:col-span-2">
+        <h2 class="text-sm font-semibold text-text-primary mb-4">Platos más pedidos</h2>
+        <ul class="space-y-3" id="dish-list">
+          {
+            topDishes.map((d) => (
+              <li>
+                <div class="flex justify-between text-xs mb-1 gap-2">
+                  <span class="text-text-secondary truncate">{d.name}</span>
+                  <span class="text-text-muted shrink-0">{d.qty}</span>
+                </div>
+                <div class="demo-bar" style={`--bar: ${Math.round((d.qty / topDishes[0].qty) * 100)}%`}>
+                  <span />
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </article>
+    </div>
+
+    <article class="card-humo p-4 sm:p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+        <div>
+          <h2 class="text-sm font-semibold text-text-primary">Hoja rápida (simulada)</h2>
+          <p class="text-xs text-text-muted mt-0.5">Edita un número y la gráfica se recalcula — sin Google Sheets.</p>
+        </div>
+        <button type="button" id="btn-reset-data" class="text-xs text-text-muted hover:text-accent-400">Restaurar datos demo</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left" id="sheet-table">
+          <thead>
+            <tr class="text-xs text-text-muted border-b border-smoke-800/60">
+              <th class="py-2 pr-3 font-medium">Periodo</th>
+              <th class="py-2 pr-3 font-medium">Ventas ($)</th>
+              <th class="py-2 font-medium">Tickets</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+
+    <p class="mt-8 text-center text-xs text-text-muted max-w-xl mx-auto">
+      En un proyecto real estos datos vendrían de tu POS, Google Sheets o una API.
+      Esta demo corre 100% en el navegador para que puedas mostrarla sin cuentas ni proveedores.
+    </p>
+  </section>
+</DemoLayout>
+
+<style>
+  .dash-range {
+    padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
+    color: #94a3b8; transition: background 0.2s, color 0.2s;
+  }
+  .dash-range.is-active { background: rgba(20, 184, 166, 0.2); color: #2dd4bf; }
+  #sheet-table input {
+    width: 6.5rem; background: #121317; border: 1px solid rgba(52, 58, 64, 0.8);
+    border-radius: 0.5rem; padding: 0.35rem 0.5rem; color: #f8fafc; font-variant-numeric: tabular-nums;
+  }
+  #sheet-table input:focus { outline: none; border-color: rgba(20, 184, 166, 0.6); }
+</style>
+
+<script>
+  function initBrasaDash() {
+    const root = document.getElementById('brasa-app');
+    if (!root || root.dataset.ready === '1') return;
+    root.dataset.ready = '1';
+
+    const data = JSON.parse(root.dataset.payload || '{}');
+    let range = 'week';
+    let series = { week: structuredClone(data.week), month: structuredClone(data.month) };
+
+    const canvas = document.getElementById('sales-chart');
+    const caption = document.getElementById('chart-caption');
+    const tbody = document.querySelector('#sheet-table tbody');
+
+    function animateKpis() {
+      const map = { sales: data.today.sales, tickets: data.today.tickets, avg: data.today.avgTicket, tables: data.today.tablesOpen };
+      const prefix = { sales: '$', tickets: '', avg: '$', tables: '' };
+      Object.keys(map).forEach((key) => {
+        const el = document.querySelector('[data-kpi="' + key + '"]');
+        if (!el) return;
+        const end = map[key];
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          el.textContent = prefix[key] + end.toLocaleString('es-MX');
+          return;
+        }
+        const start = performance.now();
+        function frame(now) {
+          const t = Math.min(1, (now - start) / 900);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = prefix[key] + Math.round(eased * end).toLocaleString('es-MX');
+          if (t < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      });
+      document.querySelectorAll('#dish-list .demo-bar').forEach((bar) => {
+        bar.classList.remove('is-on');
+        void bar.offsetWidth;
+        requestAnimationFrame(() => bar.classList.add('is-on'));
+      });
+    }
+
+    function drawChart() {
+      if (!(canvas instanceof HTMLCanvasElement)) return;
+      const pts = series[range];
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      const dpr = window.devicePixelRatio || 1;
+      const cssW = canvas.clientWidth;
+      const cssH = canvas.clientHeight;
+      canvas.width = Math.floor(cssW * dpr);
+      canvas.height = Math.floor(cssH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const pad = { t: 16, r: 12, b: 28, l: 44 };
+      const w = cssW - pad.l - pad.r;
+      const h = cssH - pad.t - pad.b;
+      const max = Math.max(...pts.map((p) => p.sales), 1);
+      ctx.clearRect(0, 0, cssW, cssH);
+      ctx.strokeStyle = 'rgba(148,163,184,0.12)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.t + (h * i) / 4;
+        ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + w, y); ctx.stroke();
+        const val = Math.round(max * (1 - i / 4));
+        ctx.fillStyle = '#64748b'; ctx.font = '10px Inter, system-ui, sans-serif'; ctx.textAlign = 'right';
+        ctx.fillText(val >= 1000 ? (val / 1000).toFixed(0) + 'k' : String(val), pad.l - 6, y + 3);
+      }
+      const step = w / Math.max(pts.length - 1, 1);
+      ctx.beginPath();
+      pts.forEach((p, i) => {
+        const x = pad.l + i * step;
+        const y = pad.t + h - (p.sales / max) * h;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.strokeStyle = '#2dd4bf'; ctx.lineWidth = 2.25; ctx.stroke();
+      const lastX = pad.l + (pts.length - 1) * step;
+      ctx.lineTo(lastX, pad.t + h); ctx.lineTo(pad.l, pad.t + h); ctx.closePath();
+      const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + h);
+      grad.addColorStop(0, 'rgba(45,212,191,0.28)'); grad.addColorStop(1, 'rgba(45,212,191,0)');
+      ctx.fillStyle = grad; ctx.fill();
+      pts.forEach((p, i) => {
+        const x = pad.l + i * step;
+        const y = pad.t + h - (p.sales / max) * h;
+        ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fillStyle = '#14b8a6'; ctx.fill();
+        ctx.fillStyle = '#94a3b8'; ctx.font = '10px Inter, system-ui, sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(p.label, x, pad.t + h + 16);
+      });
+    }
+
+    function renderTable() {
+      if (!tbody) return;
+      const pts = series[range];
+      tbody.innerHTML = '';
+      pts.forEach((p, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-smoke-800/40';
+        tr.innerHTML =
+          '<td class="py-2 pr-3 text-text-secondary">' + p.label + '</td>' +
+          '<td class="py-2 pr-3"><input type="number" min="0" step="50" data-idx="' + idx + '" data-field="sales" value="' + p.sales + '" /></td>' +
+          '<td class="py-2"><input type="number" min="0" step="1" data-idx="' + idx + '" data-field="tickets" value="' + p.tickets + '" /></td>';
+        tbody.appendChild(tr);
+      });
+      tbody.querySelectorAll('input').forEach((input) => {
+        input.addEventListener('change', () => {
+          const idx = Number(input.getAttribute('data-idx'));
+          const field = input.getAttribute('data-field');
+          const val = Number(input.value) || 0;
+          if (series[range][idx] && field) { series[range][idx][field] = val; drawChart(); }
+        });
+      });
+    }
+
+    function setRange(next) {
+      range = next;
+      document.querySelectorAll('.dash-range').forEach((btn) => {
+        btn.classList.toggle('is-active', btn.getAttribute('data-range') === range);
+      });
+      if (caption) caption.textContent = range === 'week' ? 'Últimos 7 días' : 'Semanas del mes';
+      renderTable(); drawChart();
+    }
+
+    function exportCsv() {
+      const pts = series[range];
+      const lines = ['periodo,ventas,tickets'];
+      pts.forEach((p) => lines.push(p.label + ',' + p.sales + ',' + p.tickets));
+      const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'brasa-fina-' + range + '.csv'; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.querySelectorAll('.dash-range').forEach((btn) => {
+      btn.addEventListener('click', () => setRange(btn.getAttribute('data-range') || 'week'));
+    });
+    document.getElementById('btn-export') && document.getElementById('btn-export').addEventListener('click', exportCsv);
+    document.getElementById('btn-reset-data') && document.getElementById('btn-reset-data').addEventListener('click', () => {
+      series = { week: structuredClone(data.week), month: structuredClone(data.month) };
+      setRange(range);
+    });
+    window.addEventListener('resize', () => drawChart());
+    animateKpis();
+    setRange('week');
+  }
+
+  initBrasaDash();
+  document.addEventListener('astro:page-load', initBrasaDash);
+</script>
