@@ -1,0 +1,51 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  badge?: string;
+}
+
+const {
+  title,
+  description = 'Demo interactiva de Humo — sin proveedores externos.',
+  badge = 'Demo Humo',
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title={`${title} · Humo`} description={description}>
+  <header class="sticky top-0 z-50 border-b border-smoke-800/50 bg-surface/90 backdrop-blur-md">
+    <div class="container-humo flex h-14 items-center justify-between gap-3">
+      <a
+        href={base}
+        class="text-sm font-medium text-text-secondary hover:text-accent-400 transition-colors"
+      >
+        ← Humo
+      </a>
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-accent-500/15 text-accent-400 shrink-0">
+          {badge}
+        </span>
+        <span class="text-sm font-semibold text-text-primary truncate hidden sm:inline">{title}</span>
+      </div>
+      <a href={`${base}#demos`} class="text-sm text-text-muted hover:text-text-primary transition-colors shrink-0">
+        Todas las demos
+      </a>
+    </div>
+  </header>
+  <main class="flex-1">
+    <slot />
+  </main>
+  <footer class="border-t border-smoke-800/40 py-6">
+    <div class="container-humo flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-text-muted">
+      <p>Demo de portafolio · no es un producto de un cliente real</p>
+      <p>
+        Hecho con
+        <a href={base} class="text-accent-400 hover:underline">Humo</a>
+      </p>
+    </div>
+  </footer>
+</BaseLayout>
