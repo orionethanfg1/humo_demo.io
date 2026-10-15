@@ -1,0 +1,160 @@
+---
+const base = import.meta.env.BASE_URL;
+---
+
+<section
+  id="ia"
+  class="ai-announce relative overflow-hidden border-y border-accent-500/20"
+  aria-labelledby="ai-announce-title"
+>
+  <div class="absolute inset-0 -z-10" aria-hidden="true">
+    <div class="ai-announce__mesh"></div>
+    <div class="ai-announce__glow ai-announce__glow--a"></div>
+    <div class="ai-announce__glow ai-announce__glow--b"></div>
+    <svg class="ai-announce__nodes" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="ai-line" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.05" />
+          <stop offset="50%" stop-color="#14b8a6" stop-opacity="0.35" />
+          <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0.05" />
+        </linearGradient>
+      </defs>
+      <g stroke="url(#ai-line)" stroke-width="1" fill="none">
+        <path d="M40 200 L160 120 L280 180 L400 80 L520 160 L640 100 L760 200" />
+        <path d="M40 220 L180 280 L320 220 L460 300 L600 240 L760 280" />
+        <path d="M120 60 L200 160 L300 100 L420 200 L500 120 L620 200" />
+      </g>
+      <g fill="#2dd4bf">
+        <circle cx="160" cy="120" r="3.5" opacity="0.7" />
+        <circle cx="280" cy="180" r="2.5" opacity="0.5" />
+        <circle cx="400" cy="80" r="4" opacity="0.85" />
+        <circle cx="520" cy="160" r="3" opacity="0.6" />
+        <circle cx="640" cy="100" r="3.5" opacity="0.7" />
+        <circle cx="180" cy="280" r="2.5" opacity="0.45" />
+        <circle cx="460" cy="300" r="3" opacity="0.55" />
+        <circle cx="300" cy="100" r="2" opacity="0.5" />
+        <circle cx="500" cy="120" r="3" opacity="0.65" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="container-humo relative py-16 sm:py-20 lg:py-24">
+    <div class="mx-auto max-w-4xl text-center" data-reveal>
+      <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-accent-500/40 bg-accent-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent-400">
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-400 opacity-60"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-accent-400"></span>
+        </span>
+        Nuevo en Humo
+      </p>
+
+      <h2
+        id="ai-announce-title"
+        class="ai-announce__title text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl text-balance"
+      >
+        Inteligencia Artificial
+        <span class="block text-gradient mt-1 sm:mt-2">a tu alcance</span>
+      </h2>
+
+      <p class="mx-auto mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-text-secondary">
+        Chatbots que entienden, automatizaciones que ahorran horas y herramientas que antes solo
+        tenían las grandes empresas — ahora diseñadas para tu negocio, en días, no en meses.
+      </p>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href={`${base}#contacto`} class="btn-primary min-w-[200px]">
+          Quiero IA en mi negocio
+        </a>
+        <a href={`${base}demo/bot/`} class="btn-secondary min-w-[200px]">
+          Probar demo con IA
+        </a>
+      </div>
+
+      <ul class="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-text-muted">
+        <li class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-accent-500 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          Sin equipo de data science
+        </li>
+        <li class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-accent-500 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          Resultados en días
+        </li>
+        <li class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-accent-500 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+          A la medida de tu giro
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ai-announce {
+    background: #0a0b0c;
+  }
+
+  .ai-announce__mesh {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(20, 184, 166, 0.18), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 100% 50%, rgba(45, 212, 191, 0.08), transparent 50%),
+      radial-gradient(ellipse 40% 50% at 0% 80%, rgba(15, 118, 110, 0.12), transparent 45%);
+  }
+
+  .ai-announce__glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  .ai-announce__glow--a {
+    width: 28rem;
+    height: 14rem;
+    left: 50%;
+    top: -4rem;
+    transform: translateX(-50%);
+    background: rgba(45, 212, 191, 0.25);
+    animation: ai-pulse 8s ease-in-out infinite;
+  }
+
+  .ai-announce__glow--b {
+    width: 18rem;
+    height: 18rem;
+    right: 5%;
+    bottom: -6rem;
+    background: rgba(20, 184, 166, 0.12);
+    animation: ai-pulse 11s ease-in-out infinite reverse;
+  }
+
+  .ai-announce__nodes {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+  }
+
+  .ai-announce__title {
+    text-shadow: 0 0 60px rgba(45, 212, 191, 0.15);
+  }
+
+  @keyframes ai-pulse {
+    0%,
+    100% {
+      opacity: 0.7;
+      transform: translateX(-50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translateX(-50%) scale(1.08);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-announce__glow {
+      animation: none;
+    }
+  }
+</style>
