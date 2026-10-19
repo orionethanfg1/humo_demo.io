@@ -1,6 +1,4 @@
 ---
-import { logoMark } from '../data/logoMark';
-
 interface Props {
   size?: 'sm' | 'md' | 'lg';
   showWordmark?: boolean;
@@ -8,6 +6,8 @@ interface Props {
 }
 
 const { size = 'md', showWordmark = true, class: className = '' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const logoSrc = `${base}images/Humo_logo.jpg`;
 
 const sizes = {
   sm: { icon: 'h-8 w-auto', text: 'text-base' },
@@ -19,16 +19,16 @@ const s = sizes[size];
 
 <span class={`inline-flex items-center gap-2.5 ${className}`}>
   <img
-    src={logoMark}
+    src={logoSrc}
     alt=""
     width="128"
     height="94"
     class={`${s.icon} shrink-0 object-contain drop-shadow-[0_0_14px_rgba(45,212,191,0.3)]`}
     decoding="async"
   />
-  {showWordmark && (
-    <span class={`${s.text} font-semibold tracking-[0.14em] text-text-primary uppercase`}>
-      Humo
-    </span>
-  )}
+  {
+    showWordmark && (
+      <span class={`${s.text} font-semibold tracking-[0.14em] text-text-primary uppercase`}>Humo</span>
+    )
+  }
 </span>
