@@ -1,28 +1,29 @@
 ---
-import { serviceWeb } from '../data/serviceWeb';
-import { serviceChatbot } from '../data/serviceChatbot';
-import { serviceDashboard } from '../data/serviceDashboard';
+const base = import.meta.env.BASE_URL;
 
 const services = [
   {
     id: 'web',
     title: 'Página web rápida',
-    description: 'Presencia profesional en internet lista para compartir en menos de una semana. Diseño moderno, responsive y optimizado.',
-    image: serviceWeb,
+    description:
+      'Presencia profesional en internet lista para compartir en menos de una semana. Diseño moderno, responsive y optimizado.',
+    image: `${base}images/Laptop_image.jpg`,
     value: 'Presencia digital lista para compartir',
   },
   {
     id: 'chatbot',
     title: 'Chatbot de WhatsApp',
-    description: 'Atiende horarios, agenda citas y envía recordatorios automáticamente. Tu equipo ahorra tiempo y el cliente recibe respuesta inmediata.',
-    image: serviceChatbot,
+    description:
+      'Atiende horarios, agenda citas y envía recordatorios automáticamente. Tu equipo ahorra tiempo y el cliente recibe respuesta inmediata.',
+    image: `${base}images/Phone_image.jpg`,
     value: 'Atención 24/7 sin aumentar personal',
   },
   {
     id: 'dashboard',
     title: 'Dashboard automático',
-    description: 'Ventas, productos más vendidos y reportes claros en gráficas. Control de tu negocio sin sistemas caros ni hojas de cálculo eternas.',
-    image: serviceDashboard,
+    description:
+      'Ventas, productos más vendidos y reportes claros en gráficas. Control de tu negocio sin sistemas caros ni hojas de cálculo eternas.',
+    image: `${base}images/Dashboard_Image.jpg`,
     value: 'Decisiones basadas en datos reales',
   },
 ];
@@ -31,39 +32,39 @@ const services = [
 <section id="servicios" class="py-20 sm:py-28">
   <div class="container-humo">
     <div class="mx-auto max-w-2xl text-center mb-14" data-reveal>
-      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
-        Lo que resolvemos
-      </h2>
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Lo que resolvemos</h2>
       <p class="mt-4 text-lg text-text-secondary">
         Tres soluciones concretas que puedes tener funcionando en pocos días.
       </p>
     </div>
 
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {services.map((s, i) => (
-        <article
-          class="card-humo card-humo--interactive overflow-hidden flex flex-col"
-          data-reveal
-          style={`--reveal-delay: ${i * 90}ms`}
-        >
-          <div class="aspect-[16/10] overflow-hidden bg-surface-elevated">
-            <img
-              src={s.image}
-              alt={s.title}
-              class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-              loading="lazy"
-              decoding="async"
-              width="360"
-              height="240"
-            />
-          </div>
-          <div class="p-6 sm:p-7 flex flex-col flex-1">
-            <h3 class="text-xl font-semibold text-text-primary">{s.title}</h3>
-            <p class="mt-3 flex-1 text-sm leading-relaxed text-text-secondary">{s.description}</p>
-            <p class="mt-5 text-sm font-medium text-accent-400">{s.value}</p>
-          </div>
-        </article>
-      ))}
+      {
+        services.map((s, i) => (
+          <article
+            class="card-humo card-humo--interactive overflow-hidden flex flex-col"
+            data-reveal
+            style={`--reveal-delay: ${i * 90}ms`}
+          >
+            <div class="aspect-[16/10] overflow-hidden bg-surface-elevated">
+              <img
+                src={s.image}
+                alt={s.title}
+                class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                loading="lazy"
+                decoding="async"
+                width="640"
+                height="400"
+              />
+            </div>
+            <div class="p-6 sm:p-7 flex flex-col flex-1">
+              <h3 class="text-xl font-semibold text-text-primary">{s.title}</h3>
+              <p class="mt-3 flex-1 text-sm leading-relaxed text-text-secondary">{s.description}</p>
+              <p class="mt-5 text-sm font-medium text-accent-400">{s.value}</p>
+            </div>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>
