@@ -9,7 +9,6 @@ const bgFallback = `${base}images/Background_1.jpg`;
   class="ai-announce relative overflow-hidden border-y border-accent-500/20"
   aria-labelledby="ai-announce-title"
 >
-  <!-- Imagen con titular integrado; el HTML no lo repite -->
   <div class="ai-announce__bg" aria-hidden="true">
     <img
       src={bgSrc}
@@ -36,20 +35,18 @@ const bgFallback = `${base}images/Background_1.jpg`;
       </p>
     </div>
 
-    <!-- Accesible; el titular visual está en la imagen -->
     <h2 id="ai-announce-title" class="sr-only">Inteligencia Artificial a tu alcance</h2>
 
-    <!-- Zona libre para el titular de la foto -->
+    <!-- Espacio amplio para el titular de la imagen -->
     <div class="ai-announce__stage" aria-hidden="true"></div>
 
-    <!-- Contenido anclado abajo, sobre franja oscura -->
     <div class="ai-announce__bottom" data-reveal>
-      <p class="mx-auto max-w-2xl text-sm sm:text-base leading-relaxed text-white/90">
+      <p class="mx-auto max-w-2xl text-sm sm:text-base leading-relaxed text-white/92">
         Chatbots que entienden, automatizaciones que ahorran horas y herramientas que antes solo
         tenían las grandes empresas — ahora diseñadas para tu negocio, en días, no en meses.
       </p>
 
-      <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+      <div class="mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
         <a href={`${base}#contacto`} class="btn-primary min-w-[200px] shadow-lg shadow-black/50">
           Quiero IA en mi negocio
         </a>
@@ -61,7 +58,7 @@ const bgFallback = `${base}images/Background_1.jpg`;
         </a>
       </div>
 
-      <ul class="mt-7 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-sm text-white/75">
+      <ul class="mt-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-sm text-white/75">
         <li class="flex items-center gap-2">
           <svg class="h-4 w-4 text-accent-400 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
             <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -89,7 +86,8 @@ const bgFallback = `${base}images/Background_1.jpg`;
   .ai-announce {
     isolation: isolate;
     background: #0a0b0c;
-    min-height: clamp(34rem, 72vh, 42rem);
+    /* Sección más alta: el titular de la foto cabe entero antes del copy */
+    min-height: clamp(40rem, 88vh, 52rem);
   }
 
   .ai-announce__bg {
@@ -103,31 +101,31 @@ const bgFallback = `${base}images/Background_1.jpg`;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 35%;
+    /* Empuja el titular de la imagen hacia la mitad superior */
+    object-position: center 28%;
     display: block;
   }
 
-  /* Centro casi limpio para el titular de la foto; oscuro abajo para el copy */
   .ai-announce__veil {
     position: absolute;
     inset: 0;
     background:
       linear-gradient(
         to bottom,
-        rgba(10, 11, 12, 0.45) 0%,
-        rgba(10, 11, 12, 0.08) 22%,
-        rgba(10, 11, 12, 0.05) 42%,
-        rgba(10, 11, 12, 0.55) 68%,
-        rgba(10, 11, 12, 0.92) 100%
+        rgba(10, 11, 12, 0.4) 0%,
+        rgba(10, 11, 12, 0.06) 18%,
+        rgba(10, 11, 12, 0.04) 48%,
+        rgba(10, 11, 12, 0.45) 72%,
+        rgba(10, 11, 12, 0.94) 100%
       );
   }
 
   .ai-announce__inner {
     display: flex;
     flex-direction: column;
-    min-height: clamp(34rem, 72vh, 42rem);
-    padding-top: 1.75rem;
-    padding-bottom: 1.75rem;
+    min-height: clamp(40rem, 88vh, 52rem);
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
     text-align: center;
   }
 
@@ -137,30 +135,31 @@ const bgFallback = `${base}images/Background_1.jpg`;
     flex-shrink: 0;
   }
 
-  /* Empuja el contenido inferior debajo del titular de la imagen */
+  /* Stage grande: deja libre casi todo el bloque del titular */
   .ai-announce__stage {
     flex: 1 1 auto;
-    min-height: 11rem;
+    min-height: 16rem;
   }
 
   .ai-announce__bottom {
     flex-shrink: 0;
     margin-top: auto;
+    padding-top: 0.5rem;
   }
 
   @media (min-width: 640px) {
     .ai-announce__inner {
-      padding-top: 2.25rem;
-      padding-bottom: 2.5rem;
+      padding-top: 2rem;
+      padding-bottom: 2.75rem;
     }
     .ai-announce__stage {
-      min-height: 14rem;
+      min-height: 20rem;
     }
   }
 
   @media (min-width: 1024px) {
     .ai-announce__stage {
-      min-height: 16rem;
+      min-height: 24rem;
     }
   }
 </style>
